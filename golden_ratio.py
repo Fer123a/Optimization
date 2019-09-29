@@ -1,5 +1,6 @@
 import math
 
+
 gr = (math.sqrt(5) + 1)/2
 
 
@@ -39,6 +40,6 @@ def golden_ratio(foo, min_max, a, b, tol=1e-5, max_iter=100):
         else:
             return (a+b)/2, foo((a+b)/2), n
 
-    # TODO: Implement the steps to find the maximum of a function
+    # TODO: Implement steps to find the maximum of a function
     if min_max == "max":
         pass

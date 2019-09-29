@@ -11,7 +11,7 @@ def grad(foo, var_list, init_values, tol=1e-5, max_iter=10000):
     provided that a initial point is given.
 
     Parameters:
-    foo: callable multivariable algebraic function;
+    foo: callable multivariable algebraic function built with sympy;
     var_list: list containing independent variables of the function;
     init_values: list containing the initial values of the variables
                  provided in "var_list"
@@ -39,9 +39,7 @@ def grad(foo, var_list, init_values, tol=1e-5, max_iter=10000):
                         zip(var_list, current_values)]
 
         # Check if this is the first iteration, if not, check for stop criteria
-        if n == 0:
-            pass
-        else:
+        if n != 0:
             if linalg.norm(current_values - previous_values) < tol and \
                abs(foo.subs(replacements) -
                foo.subs(previous_replacements)) < tol and \
@@ -51,7 +49,8 @@ def grad(foo, var_list, init_values, tol=1e-5, max_iter=10000):
         gradient_values = list()
 
         for index, _ in enumerate(gradient_vector):
-            gradient_values.append(float(gradient_vector[index].subs(replacements)))
+            gradient_values.append(float
+                                   (gradient_vector[index].subs(replacements)))
 
         gradient_values = asarray(gradient_values)
 
@@ -67,11 +66,14 @@ def grad(foo, var_list, init_values, tol=1e-5, max_iter=10000):
         # Perform bracketing for determining the boundaries for line sarch
         xa, _, xc, _, _, _, _ = optimize.bracket(alpha_foo)
 
-        # Perform line search for minimizing "alpha" using the Golden Section Method
+        # Perform line search for minimizing "alpha"
+        # using the Golden Section Method
         min_alpha, _, _ = golden_ratio(alpha_foo, "min", xa, xc)
 
+        # Save variable value of current iteration
         previous_values = current_values
 
+        # Calculate variable values for next iteration
         current_values = previous_values - min_alpha*gradient_values
 
         previous_replacements = replacements
